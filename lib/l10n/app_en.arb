@@ -1,0 +1,17 @@
+{
+  "quran": "Quran",
+  "sala": "Sala",
+  "qbla": "Qibla",
+  "sebha": "Sebha",
+  "lastRead": "Last read",
+  "surahno": "SURAH NO",
+  "date": "Date ",
+  "click": "CLICK ",
+  "qiblaBottomText": "Align both arrow head.\nDo not put device close to metal object.\nCalibrate the compass eveytime you use it.",
+  "resetsebha": "Reset",
+  "alhamdulillah": "alhamdulillah",
+  "laelahelaallah" : "la elah ela allah",
+  "allahuakbar": "allahu akbar",
+  "subhanallah": "subhanallah",
+  "prayer": "Prayer times according to the timing"
+}
