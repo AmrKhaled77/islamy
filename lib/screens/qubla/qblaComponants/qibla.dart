@@ -130,10 +130,10 @@ class QiblaWidget extends StatelessWidget {
                           color:Theme.of(context).primaryColor ),
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: SvgPicture.asset('assets/images/4.svg',
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: SvgPicture.asset('assets/images/4.svg',
                           fit: BoxFit.cover, //needle
-                          )
+                        )
                     ),
                   ],
                 ),

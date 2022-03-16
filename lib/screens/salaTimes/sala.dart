@@ -2,13 +2,10 @@ import 'package:adhan/adhan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-
 import '../../MainCubit/AppCubit/AppCubit.dart';
 import '../../MainCubit/AppCubit/AppCubitStates.dart';
 import 'SalaItem.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class salaTimesScreen extends StatefulWidget {
   // var locationLAT ;
@@ -49,122 +46,124 @@ class _salaTimesScreenState extends State<salaTimesScreen> {
     return BlocConsumer<appCubit, AppCubitStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.21,
-                      width: double.infinity,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image(
-                          image:
-                          AssetImage('assets/images/M-design-rotated.png'),
-                          fit: BoxFit.cover,
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.21,
+                        width: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image(
+                            image:
+                            AssetImage('assets/images/M-design-rotated.png'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.21,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.14),
-                          borderRadius: BorderRadius.circular(15)),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height*0.015,
-                        ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.21,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.14),
+                            borderRadius: BorderRadius.circular(15)),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height*0.015,
+                          ),
 
-                        Container(
-                          height: MediaQuery.of(context).size.height*0.1,
-                          width: MediaQuery.of(context).size.width*0.8,
-                          child: Center(
-                            child: Text(
+                          Container(
+                            height: MediaQuery.of(context).size.height*0.1,
+                            width: MediaQuery.of(context).size.width*0.8,
+                            child: Center(
+                              child: Text(
 
-                              '${ appCubit.get(context).IsArabic?'الصلاه القادمة':
-                              "Next pray"} : ${NextSala[1]=='none'?"fajr":NextSala[1]}',
+                                '${ appCubit.get(context).IsArabic?'الصلاه القادمة':
+                                "Next pray"} : ${NextSala[1]=='none'?"fajr":NextSala[1]}',
 
 
-                              overflow: TextOverflow.ellipsis,
+                                overflow: TextOverflow.ellipsis,
 
-                              style: TextStyle(
+                                style: TextStyle(
 
-                                color: Theme.of(context).canvasColor,
-                                fontFamily: 'Amiri',
-                                fontSize: 25,
-                                fontWeight: FontWeight.w700,
+                                  color: Theme.of(context).canvasColor,
+                                  fontFamily: 'Amiri',
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
+                        ],
+                      )
 
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 12,
-                    width: double.infinity,
-                  ),
-                  salaItem(
-                      context: context,
-                      Estring: 'Fajr',
-                      Tstring: '${DateFormat.jm().format(prayerTimes.fajr)}',
-                      Astring: 'الفجر'),
-                  SizedBox(
-                    height: 19,
-                  ),
-                  salaItem(
-                      context: context,
-                      Estring: 'Sunrise',
-                      Tstring: '${DateFormat.jm().format(prayerTimes.sunrise)}',
-                      Astring: 'الشروق'),
-                  SizedBox(
-                    height: 19,
-                  ),
-                  salaItem(
-                      context: context,
-                      Estring: 'Zuhr',
-                      Tstring: '${DateFormat.jm().format(prayerTimes.dhuhr)}',
-                      Astring: 'الظهر'),
-                  SizedBox(
-                    height: 19,
-                  ),
-                  salaItem(
-                      context: context,
-                      Estring: 'Asr',
-                      Tstring: '${DateFormat.jm().format(prayerTimes.asr)}',
-                      Astring: 'العصر'),
-                  SizedBox(
-                    height: 19,
-                  ),
-                  salaItem(
-                      context: context,
-                      Estring: 'Maghrib',
-                      Tstring: '${DateFormat.jm().format(prayerTimes.maghrib)}',
-                      Astring: 'المغرب'),
-                  SizedBox(
-                    height: 19,
-                  ),
-                  salaItem(
-                      context: context,
-                      Estring: 'Isha',
-                      Tstring: '${DateFormat.jm().format(prayerTimes.isha)}',
-                      Astring: 'العشاء'),
-                ],
-              )
-            ],
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 12,
+                      width: double.infinity,
+                    ),
+                    salaItem(
+                        context: context,
+                        Estring: 'Fajr',
+                        Tstring: '${DateFormat.jm().format(prayerTimes.fajr)}',
+                        Astring: 'الفجر'),
+                    SizedBox(
+                      height: 19,
+                    ),
+                    salaItem(
+                        context: context,
+                        Estring: 'Sunrise',
+                        Tstring: '${DateFormat.jm().format(prayerTimes.sunrise)}',
+                        Astring: 'الشروق'),
+                    SizedBox(
+                      height: 19,
+                    ),
+                    salaItem(
+                        context: context,
+                        Estring: 'Zuhr',
+                        Tstring: '${DateFormat.jm().format(prayerTimes.dhuhr)}',
+                        Astring: 'الظهر'),
+                    SizedBox(
+                      height: 19,
+                    ),
+                    salaItem(
+                        context: context,
+                        Estring: 'Asr',
+                        Tstring: '${DateFormat.jm().format(prayerTimes.asr)}',
+                        Astring: 'العصر'),
+                    SizedBox(
+                      height: 19,
+                    ),
+                    salaItem(
+                        context: context,
+                        Estring: 'Maghrib',
+                        Tstring: '${DateFormat.jm().format(prayerTimes.maghrib)}',
+                        Astring: 'المغرب'),
+                    SizedBox(
+                      height: 19,
+                    ),
+                    salaItem(
+                        context: context,
+                        Estring: 'Isha',
+                        Tstring: '${DateFormat.jm().format(prayerTimes.isha)}',
+                        Astring: 'العشاء'),
+                  ],
+                )
+              ],
+            ),
           );
         });
   }

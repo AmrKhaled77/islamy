@@ -6,7 +6,6 @@ import 'package:qurann/cache_helper/cache_helper.dart';
 import 'package:qurann/screens/HomeScreen.dart';
 import 'package:qurann/screens/OnBoarding/OnBoarding.dart';
 import 'package:qurann/screens/splach/splach.dart';
-
 import 'MainCubit/AppCubit/AppCubit.dart';
 import 'MainCubit/AppCubit/AppCubitStates.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

@@ -11,7 +11,7 @@ class LocationErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = SizedBox(height: 32);
-    final errorColor = Colors.white;
+    final errorColor =  Colors.red;
 
     return Container(
       child: Center(
@@ -33,7 +33,7 @@ class LocationErrorWidget extends StatelessWidget {
             box,
             RaisedButton(
               child: Text('RETRY',style: TextStyle(fontSize: 15,
-                  color: Color.fromARGB(255, 23, 21, 81), fontWeight: FontWeight.w800),),
+                color: Colors.black,)),
               onPressed: () {
                 if (callback != null) callback();
               },

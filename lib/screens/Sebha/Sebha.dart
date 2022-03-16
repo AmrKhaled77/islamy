@@ -160,7 +160,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
           appCubit.get(context).duration == 0) {
         setState(() {
           appCubit.get(context).taspeh = 0.0;
-          appCubit.get(context).tspehWord = '${AppLocalizations.of(context).alhamdulillah}'.toUpperCase();
+          appCubit.get(context).tspehWord = 'الحمد لله';
           appCubit.get(context).duration++;
         });
       }
@@ -168,7 +168,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
           appCubit.get(context).duration == 1) {
         setState(() {
           appCubit.get(context).taspeh = 0.0;
-          appCubit.get(context).tspehWord = '${AppLocalizations.of(context).laelahelaallah}'.toUpperCase();
+          appCubit.get(context).tspehWord = 'لا إله إلا الله';
           appCubit.get(context).duration++;
         });
       }
@@ -176,7 +176,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
           appCubit.get(context).duration == 2) {
         setState(() {
           appCubit.get(context).taspeh = 0.0;
-          appCubit.get(context).tspehWord = '${AppLocalizations.of(context).allahuakbar}'.toUpperCase();
+          appCubit.get(context).tspehWord = 'الله أكبر';
           appCubit.get(context).duration++;
         });
       }
@@ -184,7 +184,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
           appCubit.get(context).duration == 3) {
         setState(() {
           appCubit.get(context).taspeh = 0.0;
-          appCubit.get(context).tspehWord = '${AppLocalizations.of(context).subhanallah}'.toUpperCase();
+          appCubit.get(context).tspehWord = 'سبحان الله';
           appCubit.get(context).duration = 0;
         });
       }
