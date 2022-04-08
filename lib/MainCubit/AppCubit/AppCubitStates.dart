@@ -20,3 +20,4 @@ class getDataLoding extends AppCubitStates {} //loading.....
 
 class saveDataState extends AppCubitStates {}
 class AppChangeThemeSTete extends AppCubitStates {}
+class AppChangeListPattern extends AppCubitStates {}

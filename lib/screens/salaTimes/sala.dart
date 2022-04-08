@@ -42,7 +42,11 @@ class _salaTimesScreenState extends State<salaTimesScreen> {
     params.madhab = Madhab.hanafi;
     final prayerTimes = PrayerTimes.today(myCoordinates, params);
     String nextSala=prayerTimes.nextPrayer().toString();
+    String Asr=DateFormat.jm().format(prayerTimes.asr);
     List NextSala=nextSala.split('.');
+    List asr=Asr.split(':');
+    int asrTime=int.parse(asr[0]);
+
     return BlocConsumer<appCubit, AppCubitStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -142,7 +146,7 @@ class _salaTimesScreenState extends State<salaTimesScreen> {
                     salaItem(
                         context: context,
                         Estring: 'Asr',
-                        Tstring: '${DateFormat.jm().format(prayerTimes.asr)}',
+                        Tstring: '${asrTime-1}:${asr[1]}',
                         Astring: 'العصر'),
                     SizedBox(
                       height: 19,

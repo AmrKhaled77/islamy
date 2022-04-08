@@ -12,14 +12,18 @@ import 'package:quran/quran.dart' as quran;
 class quranScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+
     return BlocConsumer<appCubit, AppCubitStates>(
       listener: (context, state) {},
       builder: (context, state) {
         return Column(
 
           children: [
+
             InkWell(
               onTap: () {
+
                 List<verssModel> list=[];
                 for(int i=1;i<quran.getVerseCount(appCubit.get(context).currentSurahNumber)+1;i++){
                   String  verss=quran.getVerse(appCubit.get(context).currentSurahNumber, i);
@@ -33,12 +37,14 @@ class quranScreen extends StatelessWidget {
                             appCubit.get(context).currentSurahNumber == 9 ||
                                     appCubit.get(context).currentSurahNumber ==
                                         1
-                                ? readingScreenNoBasmala(list:list,)
-                                : ReadingScreen(list: list,)));
+                                ? readingScreenNoBasmala(list:list,lastSura: true,)
+                                : ReadingScreen(list: list,lastSura: true)));
               },
+
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 12.0, right: 12,),
+
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.27,
                   width: double.infinity,
@@ -49,6 +55,7 @@ class quranScreen extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(5)),
                   child: Stack(fit: StackFit.expand, children: [
+
                     ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: Image(
@@ -58,6 +65,7 @@ class quranScreen extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: Column(
@@ -119,6 +127,7 @@ class quranScreen extends StatelessWidget {
                                         fontSize: appCubit.get(context).IsArabic
                                             ? 16
                                             : 15)),
+
                               ],
                             ),
                           ),
@@ -128,31 +137,54 @@ class quranScreen extends StatelessWidget {
                   ]),
                 ),
               ),
-            ),buildQuranScreen(context),
+            ),buildQuranScreen(context,appCubit.get(context).juzaPattern),
+
           ],
         );
       },
     );
   }
 
-  Widget buildQuranScreen(context) {
-      return Expanded(
-        child: ListView.separated(
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return surahItem(context,index);
-            },
-            separatorBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Container(
-                  height: 1,
-                  color: Color.fromARGB(255, 87, 89, 116),
-                ),
-              );
-            },
-            itemCount: quran.totalSurahCount),
-      );
+  Widget buildQuranScreen(context,juzaPattern) {
+if(juzaPattern==true){
+  return Expanded(
+    child: ListView.separated(
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return JuzaItem(context,index);
+        },
+        separatorBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Container(
+              height: 1,
+              color: Color.fromARGB(255, 87, 89, 116),
+            ),
+          );
+        },
+        itemCount: quran.totalJuzCount),
+  );
+}else{
+  return Expanded(
+    child: ListView.separated(
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return surahItem(context,index);
+        },
+        separatorBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Container(
+              height: 1,
+              color: Color.fromARGB(255, 87, 89, 116),
+            ),
+          );
+        },
+        itemCount: quran.totalSurahCount),
+  );
+}
+
+
     }
   }
 

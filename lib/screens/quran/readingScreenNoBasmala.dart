@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:qurann/MainCubit/AppCubit/AppCubit.dart';
+import 'package:qurann/cache_helper/cache_helper.dart';
 import 'package:qurann/screens/quran/readingItem.dart';
 import 'package:qurann/screens/quran/surahItem.dart';
 
 class readingScreenNoBasmala extends StatelessWidget {
   List<verssModel> list;
-readingScreenNoBasmala({this.list});
+  bool lastSura =false;
+readingScreenNoBasmala({this.list,this.lastSura});
   @override
   Widget build(BuildContext context) {
+    lastSura?WidgetsBinding.instance.addPostFrameCallback((_) => appCubit.get(context).GoToLastAyaIndex())
+    :(){};
+
+    appCubit.get(context).currentSurahName = cacheHelper.getdata(key: 'suraName');
+    appCubit.get(context).currentSurahNumber = cacheHelper.getdata(key: 'suraID');
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,

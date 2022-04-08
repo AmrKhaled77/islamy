@@ -44,6 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Scaffold(
 
+               floatingActionButton:   FloatingActionButton(onPressed:
+              appCubit.get(context).changeListPattern,
+               child: Icon(Icons.wifi_protected_setup_outlined),),
+
 
                 backgroundColor: appCubit.get(context).isDark?Colors.transparent:
               Colors.white,

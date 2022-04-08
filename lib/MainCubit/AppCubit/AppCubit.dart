@@ -1,5 +1,9 @@
 
+
+
 import 'package:adhan/adhan.dart';
+import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +15,15 @@ class appCubit extends Cubit<AppCubitStates> {
 
   static appCubit get(context) => BlocProvider.of(context);
   DateTime currentTime = DateTime.now();
+  double suraOffset;
+  final Scrollcontroller =ScrollController();
+  GoToLastAyaIndex(){
+    double offset=cacheHelper.getdata(key: 'lastverss');
+    Scrollcontroller.animateTo(offset, duration:
+    Duration(seconds: 1)
+        , curve: Curves.ease );
+
+  }
 
   String todayDateClock() {
     var now = new DateTime.now();
@@ -88,10 +101,15 @@ void c(){
   final prayerTimes = PrayerTimes.today(myCoordinates, params);
   rayerTimes =PrayerTimes.today(myCoordinates, params);
 }
+  bool juzaPattern=false;
+void changeListPattern(){
+  juzaPattern=!juzaPattern;
+  emit(AppChangeListPattern());
+}
 
   }
 
-
+//
 
 
 
