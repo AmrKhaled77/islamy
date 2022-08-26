@@ -1,29 +1,34 @@
-
-
-
 import 'package:adhan/adhan.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:qurann/cache_helper/cache_helper.dart';
+import '../../screens/quran/SurahAndJuz2Item.dart';
 import 'AppCubitStates.dart';
 import '../../MainCubit/AppCubit/AppCubitStates.dart';
+
 class appCubit extends Cubit<AppCubitStates> {
   appCubit() : super(ThemeInitialState());
 
   static appCubit get(context) => BlocProvider.of(context);
   DateTime currentTime = DateTime.now();
   double suraOffset;
-  final Scrollcontroller =ScrollController();
-  GoToLastAyaIndex(){
-    double offset=cacheHelper.getdata(key: 'lastverss');
-    Scrollcontroller.animateTo(offset, duration:
-    Duration(seconds: 1)
-        , curve: Curves.ease );
+  final Scrollcontroller = ScrollController();
 
-  }
+  GoToLastAyaIndex(int suranum) {
+    if(cacheHelper.getdata(key: 'lastsuraCheck')==suranum){
+    double offset = cacheHelper.getdata(key: 'lastverss');
+    Scrollcontroller.animateTo(offset,
+        duration: Duration(seconds: 1), curve: Curves.ease);
+  }}
 
   String todayDateClock() {
     var now = new DateTime.now();
@@ -71,8 +76,8 @@ class appCubit extends Cubit<AppCubitStates> {
   int duration = 0;
   var currentAngle = 0.0;
 
+  bool isDark = false;
 
-  bool isDark=false;
   void changeTheme(bool fromCache) {
     if (fromCache != null) {
       emit(AppChangeThemeSTete());
@@ -83,33 +88,52 @@ class appCubit extends Cubit<AppCubitStates> {
         .saveData(key: 'isDark', value: isDark)
         .then((value) => {emit(AppChangeThemeSTete())});
   }
-  var locationLAT=30.21035;
-  var locationLON=31.36812;
 
-  // void getLocationLat() async {
-  //   var x = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.best,);
-  //   var lastPosition = await Geolocator.getLastKnownPosition();
-  //   locationLAT =x.altitude;
-  //   locationLON = x.longitude;
-  // }
-  PrayerTimes rayerTimes;
-void c(){
-  final myCoordinates = Coordinates(30.033333, 31.233334);
-  final params = CalculationMethod.egyptian.getParameters();
-  params.madhab = Madhab.hanafi;
-  final prayerTimes = PrayerTimes.today(myCoordinates, params);
-  rayerTimes =PrayerTimes.today(myCoordinates, params);
-}
-  bool juzaPattern=false;
-void changeListPattern(){
-  juzaPattern=!juzaPattern;
-  emit(AppChangeListPattern());
-}
+  var locationlaitude = 30.033333;
+  var locationlongitude = 31.233334;
 
+  void getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, We cannot request permissions');
+    }
+    var position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    var LastPosition = await Geolocator.getLastKnownPosition();
+    print(LastPosition);
+    print(position.latitude);
+    locationlaitude = position.latitude;
+    locationlongitude = position.longitude;
+    emit(locationState());
   }
 
+  void ShowToast(context, message) => Fluttertoast.showToast(
+    msg: message,
+    fontSize: 15,
+    backgroundColor:
+    appCubit.get(context).isDark ? Colors.white : Colors.white,
+    textColor: appCubit.get(context).isDark ? Colors.black : Colors.black,
+  );
+  List <String> LIST=[];
+  List Quran=[];
+
+// bool isReading=false;
+// void change(){
+//   isReading=!isReading;
+//   emit(ChangeState());
 //
+// }
+  List<verssModel> AudioList = [];
 
-
+}
 

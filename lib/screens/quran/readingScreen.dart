@@ -1,119 +1,129 @@
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:qurann/MainCubit/AppCubit/AppCubit.dart';
 import 'package:qurann/cache_helper/cache_helper.dart';
 import 'package:qurann/screens/quran/readingItem.dart';
-import 'package:qurann/screens/quran/surahItem.dart';
+import 'package:qurann/screens/quran/SurahAndJuz2Item.dart';
+import 'package:quran/quran.dart' as quran;
 
 class ReadingScreen extends StatefulWidget {
-
   List<verssModel> list;
-bool lastSura=false;
+  bool lastSura = false;
+  int suraNum;
 
-  ReadingScreen({this.list,this.lastSura});
+  ReadingScreen({this.list, this.lastSura, this.suraNum});
 
   @override
-
   State<ReadingScreen> createState() => _ReadingScreenState();
 }
 
 class _ReadingScreenState extends State<ReadingScreen> {
-
-
   double suraOffset;
 
   @override
   Widget build(BuildContext context) {
+    widget.lastSura
+        ? WidgetsBinding.instance.addPostFrameCallback((_) => appCubit
+            .get(context)
+            .GoToLastAyaIndex(appCubit.get(context).currentSurahNumber))
+        : () {};
 
-    appCubit.get(context).currentSurahName = cacheHelper.getdata(key: 'suraName');
-    appCubit.get(context).currentSurahNumber = cacheHelper.getdata(key: 'suraID');
-    widget.lastSura?WidgetsBinding.instance.addPostFrameCallback((_) => appCubit.get(context).GoToLastAyaIndex())
-        :(){print('');};
-
+    appCubit.get(context).currentSurahName =
+        cacheHelper.getdata(key: 'suraName');
+    appCubit.get(context).currentSurahNumber =
+        cacheHelper.getdata(key: 'suraID');
     return Scaffold(
-      body: Stack(
-
-        alignment: Alignment.center,
-        children: [
-          Image(
-            image: appCubit.get(context).isDark
-                ? AssetImage('assets/images/backgroundupperdraw.png')
-                : AssetImage('assets/images/light.jpg'),
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.fill,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 12, right: 12, top: 25),
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.85,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: appCubit.get(context).isDark
-                    ? Color.fromARGB(255, 16, 15, 54)
-                    : Colors.grey[350],
-              ),
-              child: Column(
-
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.095,
-                    child: Center(
-                        child: Image.asset(
-                      'assets/images/basmala.png',
-                      fit: BoxFit.fill,
+      backgroundColor: appCubit.get(context).isDark
+          ? Color.fromARGB(255, 22, 31, 87)
+          : Color.fromARGB(255, 251, 228, 189),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.9,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: appCubit.get(context).isDark
+                  ? Color.fromARGB(255, 16, 15, 54)
+                  : Color.fromARGB(255, 150, 121, 89).withOpacity(0.75),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.095,
+                  child: Center(
+                      child: Image.asset(
+                    'assets/images/basmala.png',
+                    fit: BoxFit.fill,
+                    color: appCubit.get(context).isDark
+                        ? Colors.white
+                        : Colors.black,
+                  )),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+                Expanded(child: buildReadingScreen(context, widget.list)),
+                InkWell(
+                  onTap: () {
+                    suraOffset = appCubit.get(context).Scrollcontroller.offset;
+                    cacheHelper.saveData(key: 'lastverss', value: suraOffset);
+                    cacheHelper.saveData(
+                        key: 'lastsuraCheck', value: widget.suraNum);
+                    appCubit.get(context).ShowToast(context, 'تم الحفظ');
+                  },
+                  child: Container(
+                    height: MediaQuery.of(context).size.width * 0.11,
+                    width: MediaQuery.of(context).size.width * 0.24,
+                    child: Icon(
+                      Icons.save,
+                      size: 30,
+                      color: appCubit.get(context).isDark
+                          ? Color.fromARGB(255, 22, 31, 87)
+                          : Color.fromARGB(255, 45, 37, 20),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
                       color: appCubit.get(context).isDark
                           ? Colors.white
-                          : Colors.black,
-                    )),
+                          : Color.fromARGB(255, 251, 228, 189),
+                    ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                  ),
-                  Expanded(child: Padding(
-                    padding: const EdgeInsets.only(right: 12, left: 12, bottom: 15),
-                    child: ListView.builder(
-                        controller: appCubit.get(context).Scrollcontroller,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              readingItem(
-                                  appCubit.get(context).isDark ? Colors.white : Colors.black,
-                                  widget.list,
-                                  index),
-
-                            ],
-                          );
-                        },
-                        itemCount: widget.list.length),
-                  )
-
-                  ),
-                  FloatingActionButton(onPressed: (){
-                    suraOffset=appCubit.get(context).Scrollcontroller.offset;
-                    cacheHelper.saveData(key: 'lastverss', value:suraOffset );}
-                    ,child: Icon(Icons.save),
-
-
-                  ),
-
-
-
-                  // FloatingActionButton(onPressed: GoToLastAyaIndex)
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.009,
+                ),
+              ],
             ),
-
           ),
-          
-
-
-        ],
+        ),
       ),
+    );
+  }
+
+  Widget buildReadingScreen(context, List<verssModel> list) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12, left: 12, bottom: 7),
+      child: ListView.builder(
+          controller: appCubit.get(context).Scrollcontroller,
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                readingItem(
+                    appCubit.get(context).isDark
+                        ? Colors.white
+                        : Color.fromARGB(255, 45, 37, 20),
+                    list,
+                    index),
+              ],
+            );
+          },
+          itemCount: list.length),
     );
   }
 }

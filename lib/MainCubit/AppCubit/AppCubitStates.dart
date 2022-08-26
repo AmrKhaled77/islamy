@@ -19,5 +19,9 @@ class getSalaTimesDataError extends AppCubitStates {}
 class getDataLoding extends AppCubitStates {} //loading.....
 
 class saveDataState extends AppCubitStates {}
+
+class locationState extends AppCubitStates {}
+
 class AppChangeThemeSTete extends AppCubitStates {}
-class AppChangeListPattern extends AppCubitStates {}
+
+class ChangeState extends AppCubitStates {}

@@ -1,9 +1,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qurann/screens/Sebha/Sebha.dart';
+
 import 'package:qurann/screens/quran/quran.dart';
 import 'package:qurann/screens/salaTimes/sala.dart';
+import '../screens/Sebha&Azkar/Sebha&Azkar.dart';
 import '../screens/qubla/qibla.dart';
 import 'bottomNavBarStates.dart';
 
@@ -17,7 +18,7 @@ class bottomNavBarCubit extends Cubit<bottomNavBarStates> {
     quranScreen(),
     salaTimesScreen(),
     QiblaScreen(),
-    SebhaScreen(),
+    SebhaAzkarScreen(),
   ];
 
   void ChangeIndex(int index) {

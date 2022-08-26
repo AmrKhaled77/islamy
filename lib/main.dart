@@ -2,6 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:qurann/cache_helper/cache_helper.dart';
 import 'package:qurann/screens/HomeScreen.dart';
 import 'package:qurann/screens/OnBoarding/OnBoarding.dart';
@@ -12,7 +13,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
 
   await cacheHelper.init();
   String suraName = cacheHelper.getdata(key: 'suraName');
@@ -30,54 +30,65 @@ class MyApp extends StatelessWidget {
   final bool isarabic;
   final bool onBoarding;
 
-  MyApp(
-      this.suraName, this.suraID, this.isDark, this.isarabic, this.onBoarding);
+  MyApp(this.suraName, this.suraID, this.isDark, this.isarabic,
+      this.onBoarding);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-
-        create: (BuildContext context) => appCubit()..c()
-          // ..getChaptersData()
-          // ..getTaspehWord()
+        create: (BuildContext context) =>
+        appCubit()
           ..ChangeLocale(isarabic)
-        ..changeTheme(isDark),
+          ..changeTheme(isDark),
         child: BlocConsumer<appCubit, AppCubitStates>(
           listener: (context, state) {},
           builder: (context, state) {
-            appCubit.get(context).currentSurahName = suraName;
-            appCubit.get(context).currentSurahNumber = suraID;
+            appCubit
+                .get(context)
+                .currentSurahName = suraName;
+            appCubit
+                .get(context)
+                .currentSurahNumber = suraID;
             SystemChrome.setPreferredOrientations([
               DeviceOrientation.portraitUp,
             ]);
 
-            return MaterialApp(
-
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: appCubit.get(context).IsArabic
-                  ? Locale('ar', '')
-                  : Locale('en', ''),
-              theme: ThemeData(
-                primaryColor: Colors.black,
-                accentColor: Colors.white,
-                canvasColor: Colors.black,
-                scaffoldBackgroundColor: Colors.white
-              ),
-              darkTheme: ThemeData(
-                  primaryColor: Color.fromARGB(255, 134, 48, 177),
-                  accentColor: Color.fromARGB(255, 22, 31, 87),
-                  canvasColor: Colors.white),
-              themeMode: appCubit.get(context).isDark?ThemeMode.dark:ThemeMode.light,
-              home: AnimatedSplashScreen(
-                duration: 5000,
-                splashTransition: SplashTransition.fadeTransition,
-                nextScreen: onBoarding!=true? OnBording():HomeScreen(),
-                splash: splach(),
-                splashIconSize: 2000,
-                backgroundColor:appCubit.get(context).isDark?
-                Color.fromARGB(255, 23, 21, 81):Colors.white,
+            return OverlaySupport.global(
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                locale: appCubit
+                    .get(context)
+                    .IsArabic
+                    ? Locale('ar', '')
+                    : Locale('en', ''),
+                theme: ThemeData(
+                    primaryColor: Color.fromARGB(255, 150, 121, 89),
+                    accentColor: Color.fromARGB(255, 251, 228, 189),
+                    canvasColor: Color.fromARGB(255, 45, 37, 20),
+                    scaffoldBackgroundColor: Color.fromARGB(255, 150, 121, 89)),
+                darkTheme: ThemeData(
+                    primaryColor: Color.fromARGB(255, 134, 48, 177),
+                    accentColor: Color.fromARGB(255, 22, 31, 87),
+                    canvasColor: Colors.white),
+                themeMode: appCubit
+                    .get(context)
+                    .isDark
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+                home: AnimatedSplashScreen(
+                  duration: 5000,
+                  splashTransition: SplashTransition.fadeTransition,
+                  nextScreen: onBoarding != true ? OnBording() : HomeScreen(),
+                  splash: splach(),
+                  splashIconSize: 2000,
+                  backgroundColor: appCubit
+                      .get(context)
+                      .isDark
+                      ? Color.fromARGB(255, 23, 21, 81)
+                      : Color.fromARGB(255, 251, 228, 189),
+                ),
               ),
             );
           },
